@@ -1,0 +1,27 @@
+{
+  "name": "bikesweather",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4",
+    "jsonld": "^3.0.1",
+    "material-ui": "^0.20.2",
+    "materialize-css": "^1.0.0-rc.2",
+    "next": "10.0.9",
+    "querystring": "^0.2.0",
+    "rdfstore": "^0.9.17",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-map-gl": "^6.1.10",
+    "xml-js": "^1.6.11",
+    "xmlhttprequest": "^1.8.0"
+  }
+}
