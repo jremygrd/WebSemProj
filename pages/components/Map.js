@@ -1,6 +1,7 @@
 import React, { useEffect, useState,Component } from 'react';
 import ReactMapGL, { Marker } from "react-map-gl";
 import styles from "../../styles/Home.module.css";
+import Emoji from "react-emoji-render"
 var axios = require('axios');
 var qs = require('querystring');
 import Popup from './popup'
@@ -64,6 +65,8 @@ Refresh = async() => {
           lng: bind.lng.value.slice(0,10),
           bikeCapacity: bind.bikeCapacity.value,
           parkCapacity: bind.parkCapacity.value,
+          temperature: bind.temperature.value,
+          open: false,
         };
         stations.push(station);
       });
@@ -79,10 +82,32 @@ Refresh = async() => {
   render() {
     return (
       <>
-        <div className={styles.splitLeft}>
-          <div className={styles.centered}>
-            <h2>Jane Flex</h2>
-            <p onClick={this.Refresh} className = {styles.button}>Click here to look around here</p>
+        <div className={styles.splitLeft} style={{}}>
+          <div className={styles.scrollbar} style={{height: "90vh", overflow: "scroll", overflowX: "hidden"}} >{
+              this.state.stations.map((station)=>
+                          (
+                        <div style = {{padding: "10px", backgroundColor: "white", margin: "10px", borderRadius: "10px", boxShadow:"0px 2px 20px 0 rgba(0,0,0,0.2)", cursor:"pointer"}} 
+                        onClick={()=>{this.setState({viewport:{
+                          width: "100vw",
+                          height: "100vh",
+                          latitude: parseFloat(station.lat)<20 ?parseFloat(station.lat)*10:parseFloat(station.lat),
+                          longitude: parseFloat(station.lng),
+                          zoom: 13,
+                        }}); station.open = true;}} className = {styles.card}>
+                          <h3 style = {{fontFamily: "sans-serif"}}>
+                          <Emoji text = "	📍"/>{station.name}
+                          </h3>
+                          <h4 style = {{fontFamily: "sans-serif"}}>
+                            <Emoji text = "🅿️"/>{station.parkCapacity}<br/>
+                            <Emoji text = "🚲"/> {station.bikeCapacity} <br/>
+                            <Emoji text = "🌡️"/> {station.temperature} °C 
+                          </h4>
+                        </div>
+                      ))
+                  }
+          </div>
+          <div className="div" style={{ height: "6vh"}}>
+            <p onClick={this.Refresh} className = {styles.button} style = {{fontFamily: "sans-serif"}}>Click here to look around here</p>
           </div>
         </div>
 
@@ -93,23 +118,22 @@ Refresh = async() => {
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 mapboxApiAccessToken="pk.eyJ1IjoiYmlsaWJvcGV1ciIsImEiOiJja21lc2gzcmExcnIyMm9xbGlpeXAzM2d6In0.0YYuHNBRMRkKisT1YMkujA"
                 onViewportChange={(viewport) => {this.setState({ viewport:viewport })}}
-                {...this.state.viewport}
-              >
-               {
-                  this.state.stations.map((station)=>
-                      (
-                    <Marker
-                        id={station.name}
-                        latitude={parseFloat(station.lat)<20 ?parseFloat(station.lat)*10:parseFloat(station.lat)}
-                        longitude={parseFloat(station.lng)}
+                {...this.state.viewport}>
+                  {
+                      this.state.stations.map((station)=>
+                          (
+                        <Marker
+                            id={station.name}
+                            latitude={parseFloat(station.lat)<20 ?parseFloat(station.lat)*10:parseFloat(station.lat)}
+                            longitude={parseFloat(station.lng)}                       
+                            >
+                      <Popup >
+                        {station}
+                      </Popup>
                         
-                        >
-                  <Popup>{station}</Popup>
-                    
-                </Marker>
-                  ))
-              }
-
+                    </Marker>
+                      ))
+                  }
               </ReactMapGL>
             </div>
           </div>

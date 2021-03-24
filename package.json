@@ -20,6 +20,7 @@
     "rdfstore": "^0.9.17",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-emoji-render": "^1.2.4",
     "react-map-gl": "^6.1.10",
     "xml-js": "^1.6.11",
     "xmlhttprequest": "^1.8.0"
