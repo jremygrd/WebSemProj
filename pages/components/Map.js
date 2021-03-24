@@ -54,7 +54,7 @@ Refresh = async() => {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
-    }).then((response) => {
+    }).then((response) => {console.log(response);
       const bindings = response.data.results.bindings;
       bindings.forEach((bind) => {
         let station = {
@@ -82,7 +82,7 @@ Refresh = async() => {
     return (
       <>
         <div className={styles.splitLeft} style={{}}>
-          <div vocab="http://www.owl-ontologies.com/bikestation.owl/" typeof="Things" className={styles.scrollbar} style={{height: "90vh", overflow: "scroll", overflowX: "hidden"}} >{
+          <div prefix="foo: http://www.owl-ontologies.com/unnamed.owl/" vocab="http://www.owl-ontologies.com/unnamed.owl/" className={styles.scrollbar} style={{height: "90vh", overflow: "scroll", overflowX: "hidden"}} >{
               this.state.stations.map((station)=>
                           (
                             <div style = {{padding: "10px", backgroundColor: "white", margin: "10px", borderRadius: "10px", boxShadow:"0px 2px 20px 0 rgba(0,0,0,0.2)", cursor:"pointer"}} 
@@ -93,20 +93,22 @@ Refresh = async() => {
                               longitude: parseFloat(station.lng),
                               zoom: 13,
                             }}); station.open = true;}} className = {styles.card}>
-                            <div typeof="bikeStation">
                               <h3 style = {{fontFamily: "sans-serif"}}>
-                              <Emoji text = "	📍"/>{station.name}
+                                <div style = {{display:"inline-flex"}}>
+                                  <Emoji style={{marginRight:"10px"}} text = "	📍"/><div property = "foo:name">{station.name}</div>
+                                </div>
                               </h3>
-                              <h4 style = {{fontFamily: "sans-serif"}}>
-                                <Emoji text = "🅿️"/>{station.parkCapacity}<br/>
-                                <Emoji text = "🚲"/> {station.bikeCapacity} <br/>
+                              <h4 style = {{fontFamily: "sans-serif" }}>
+                                <div style = {{display:"inline-flex"}}>
+                                  <Emoji style={{marginRight:"10px"}} text = "🅿️"/><div property = "foo:parkCapacity">{station.parkCapacity}</div>
+                                </div><br/><br/>
+                                <div style = {{display:"inline-flex"}}>
+                                  <Emoji style={{marginRight:"10px"}} text = "🚲"/><div property = "foo:bikeCapacity">{station.bikeCapacity}</div>
+                                </div><br/><br/>
+                                <div style = {{display:"inline-flex", marginBottom:"5px"}}>
+                                  <Emoji style={{marginRight:"10px"}} text = "🌡️"/><div property = "foo:temperature">{station.temperature} °C </div>
+                                </div>
                               </h4>
-                            </div>
-                            <div typeof="meteoStation">
-                              <h4>
-                              <Emoji text = "🌡️"/> {station.temperature} °C 
-                              </h4>
-                            </div>
                         </div>
                       ))
                   }
@@ -132,10 +134,9 @@ Refresh = async() => {
                             latitude={parseFloat(station.lat)<20 ?parseFloat(station.lat)*10:parseFloat(station.lat)}
                             longitude={parseFloat(station.lng)}                       
                             >
-                      <Popup >
-                        {station}
-                      </Popup>
-                        
+                        <Popup >
+                          {station}
+                        </Popup>                        
                     </Marker>
                       ))
                   }
