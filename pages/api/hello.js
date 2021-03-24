@@ -25,14 +25,6 @@ export default async (req, res) => {
     {
         name: "StEtienne",
         url: "https://saint-etienne-gbfs.klervi.net/gbfs/en/station_information.json"
-    },
-    {
-        name: "Rennes",
-        url: "https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-des-stations-le-velo-star-en-temps-reel&rows=55"
-    },
-    {
-        name: "Montpellier",
-        url: "https://data.montpellier3m.fr/sites/default/files/ressources/TAM_MMM_VELOMAG.xml"
     }
     
 ];
@@ -55,14 +47,6 @@ const urlsWeather = [
         name: "StEtienne",
         url: "https://api.openweathermap.org/data/2.5/weather?q=Saint-Etienne&appid=dcf9521833af767bb716a06812acbba7&units=metric"
     },
-    {
-        name: "Rennes",
-        url: "https://api.openweathermap.org/data/2.5/weather?q=Rennes&appid=dcf9521833af767bb716a06812acbba7&units=metric"
-    },
-    {
-        name: "Montpellier",
-        url: "https://api.openweathermap.org/data/2.5/weather?q=Montpellier&appid=dcf9521833af767bb716a06812acbba7&units=metric"
-    }
     
 ];
 
@@ -143,67 +127,6 @@ var FormatStEtienne = (response,responseW) => {
 
 
 
-var FormatRennes = (response,responseW) => {
-    response = JSON.parse(response);
-    responseW = JSON.parse(responseW);
-    if(response.length == 10001||10006)
-        return null;
-    let array = response.records;
-    for (let index = 0; index < array.length; index++) {
-        let id = array[index].datasetid;
-        let name = array[index].fields.nom;
-        let lat = array[index].fields.coordonnees[0];
-        let lng = array[index].fields.coordonnees[1];
-
-        let cycleAvailability = array[index].fields.nombrevelosdisponibles;
-        let parkcapacity = array[index].fields.nombreemplacementsdisponibles;
-        let temperature = Math.round(responseW.main.temp)
-        let station = {id, name, lat, lng, bikeCapacity : cycleAvailability, parkCapacity : parkcapacity,temperature:temperature};
-        stations.push(station);
-    }
-};
-
-var FormatMontpellier = (response,responseW) => {
-    let result = convert.xml2json(response, {
-        compact: true,
-        spaces: 4
-    });
-    response = JSON.parse(result);
-    responseW = JSON.parse(responseW);
-    let array = response.vcs.sl.si;
-    for (let index = 0; index < array.length; index++) {
-        let id = array[index]._attributes.id;
-        let name = array[index]._attributes.na;
-        let lat = array[index]._attributes.la;
-        let lng = array[index]._attributes.lg;
-        let cycleAvailability = array[index]._attributes.av;
-        let parkcapacity = array[index]._attributes.fr;
-        let temperature = Math.round(responseW.main.temp)
-        let station = {id, name, lat, lng, bikeCapacity : cycleAvailability, parkCapacity : parkcapacity,temperature:temperature};
-        stations.push(station);
-    }
-};
-
-var FormatStrasbourg = (response,responseW) => {
-    response = JSON.parse(response);
-    responseW = JSON.parse(responseW);
-    const array = response.records;
-    for (let index = 0; index < array.length; index++) {
-        let id = array[index].datasetid;
-        let name = array[index].fields.na;
-        let lat = array[index].fields.latlng[0];
-        let lng = array[index].fields.latlng[1];
-        let cycleAvailability = array[index].fields.av;
-        let parkcapacity = array[index].fields.fr;
-        let temperature = Math.round(responseW.main.temp)
-        let station = {id, name, lat, lng, bikeCapacity : cycleAvailability, parkCapacity : parkcapacity,temperature:temperature};
-        stations.push(station);
-    }
-};
-
-/**
- * Function that returns the data from the url. The data is unformatted
- */
 var callUrl = async (url) => {
     xhr.open('GET', url, false);
     xhr.send(null);
@@ -212,9 +135,6 @@ var callUrl = async (url) => {
 };
 
 
-/**
- * Function that go through all the url, get the data and call the functions that format
- */
 var getDataresponse = async () => {
     for (let index = 0; index < urls.length; index++) {
         const response = await callUrl(urls[index].url)
@@ -226,15 +146,6 @@ var getDataresponse = async () => {
                 break;
             case "Lyon":
                 FormatLyon(response,responseW);
-                break;
-            case "Rennes":
-                FormatRennes(response,responseW);
-                break;
-            case "Montpellier":
-                FormatMontpellier(response,responseW);
-                break;
-            case "Strasbourg":
-                FormatStrasbourg(response,responseW);
                 break;
             case "Paris":
                 FormatParis(response,responseW);
@@ -295,11 +206,10 @@ async function main(){
             'Content-Type': 'application/n-triples'
         }
     })
-    console.log(resUpdate.data)
+    return {"john":"doe"}
 }
 main()
-
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({"lol":"lol"})
 }
 
 

@@ -1,6 +1,7 @@
 import App, {Container} from 'next/app';
 import Head from 'next/head';
 import React from 'react';
+const axios = require('axios');
 
 class MyApp extends App {
     static async getInitialProps({Component, ctx}) {
@@ -10,6 +11,10 @@ class MyApp extends App {
             pageProps = await Component.getInitialProps(ctx);
             
         }
+        let f = await axios({
+            method: "GET",
+            url: "http://localhost:3000/api/hello",
+        })
         return {pageProps};
     }
 
