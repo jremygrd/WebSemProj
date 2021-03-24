@@ -299,7 +299,7 @@ async function main(){
 }
 main()
 
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json(resUpdate)
 }
 
 
