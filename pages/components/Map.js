@@ -46,7 +46,7 @@ Refresh = async() => {
         FILTER(?lng>${this.state.viewport.longitude}-0.025) .
         FILTER(?lat>${this.state.viewport.latitude}-0.015) .
     } 
-    limit 8`;
+    limit 50`;
     axios({
       method: "POST",
       url: "http://localhost:3030/bikes/query",
@@ -109,16 +109,18 @@ Refresh = async() => {
                                   <Emoji style={{marginRight:"10px"}} text = "🌡️"/><div property = "foo:temperature">{station.temperature} °C </div>
                                 </div>
                               </h4>
+                              <div className={styles.invdiv} property="foo:lng">{station.lng} </div>
+                              <div className={styles.invdiv} property="foo:lat">{station.lat} </div>
                         </div>
                       ))
                   }
           </div>
           <div className="div" style={{ height: "6vh"}}>
-            <p onClick={this.Refresh} className = {styles.button} style = {{fontFamily: "sans-serif", margin:"10px"}}>Click here to look around here</p>
+            <p onClick={this.Refresh} className = {styles.button} style = {{fontFamily: "sans-serif", margin:"10px", fontSize:"20px", textAlign:"center"}}>Click here to look around</p>
           </div>
         </div>
 
-        <div className={styles.splitRight}>
+        <div>
           <div className={styles.centered}>
             <div>
               <ReactMapGL
@@ -143,6 +145,50 @@ Refresh = async() => {
               </ReactMapGL>
             </div>
           </div>
+        </div>
+        <div className={styles.splitRight}>
+          <div style = {{display:"inline-flex"}}>
+            <div className="div" style={{ height: "4vh", width: "8vw", margin:"1vw 1vh"}}>
+                <p onClick={()=>{this.setState({viewport:{
+                              width: "100vw",
+                              height: "100vh",
+                              latitude: 48.85,
+                              longitude: 2.35,
+                              zoom: 13,
+                            }}); this.Refresh}} className = {styles.button} style = {{fontFamily: "sans-serif", textAlign:"center"}}>Paris</p>
+              </div>
+              <div className="div" style={{ height: "4vh", width: "8vw", margin:"1vw 1vh"}}>
+                <p onClick={()=>{this.setState({viewport:{
+                              width: "100vw",
+                              height: "100vh",
+                              latitude: 50.63,
+                              longitude: 3.06,
+                              zoom: 13,
+                            }}); this.Refresh}} className = {styles.button} style = {{fontFamily: "sans-serif", textAlign:"center"}} className = {styles.button} style = {{fontFamily: "sans-serif", textAlign:"center"}}>Lille</p>
+              </div>
+            </div>
+            <div style = {{display:"inline-flex"}}>
+              <div className="div" style={{ height: "4vh", width: "8vw", margin:"1vw 1vh"}}>
+                <p onClick={()=>{this.setState({viewport:{
+                              width: "100vw",
+                              height: "100vh",
+                              latitude: 45.75,
+                              longitude: 4.85,
+                              zoom: 13,
+                            }}); this.Refresh}} className = {styles.button} style = {{fontFamily: "sans-serif", textAlign:"center"}}>Lyon</p>
+              </div>
+              <div className="div" style={{height: "4vh", width: "8vw", margin:"1vw 1vh"}}>
+                <p onClick={()=>{this.setState({viewport:{
+                              width: "100vw",
+                              height: "100vh",
+                              latitude: 45.43,
+                              longitude: 4.38,
+                              zoom: 13,
+                            }});
+                            setTimeout(()=> {this.Refresh; }, 1000)
+                            }} className = {styles.button} style = {{fontFamily: "sans-serif", textAlign:"center"}}>Saint-Etienne</p>
+              </div>
+            </div>
         </div>
       </>
     );

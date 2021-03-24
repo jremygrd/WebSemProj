@@ -31,9 +31,9 @@ class MyApp extends App {
                     <meta content="width=device-width, initial-scale=1" name="viewport" />
                     <link href="/static/favicon.ico" rel="shortcut icon" />
                     <link href="https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css" rel="stylesheet" />
-                    <meta content={description} name="description" />
-                    <meta property="og:title" content={'Heyyyy'} />
-                    <meta content="en_US" property="og:locale" />
+                    <meta property="og:title" content={'web semantic project'} />
+                    <meta content="Fr" property="og:locale" />
+                    <meta property="og:autors" content="Jeremy Gourdeau, Thomas Isla, Antoine Hazart"/>
                     <meta content={description} property="og:description" />
                     <meta content="https://next-mapbox-demo.now.sh" property="og:url" />
                 </Head>
