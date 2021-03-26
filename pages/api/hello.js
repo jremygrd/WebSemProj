@@ -55,7 +55,7 @@ var xhr = new XMLHttpRequest();
 var convert = require('xml-js');
 
 let stations = []
-var FormatParis = (response,responseW) => {
+var Paris = (response,responseW) => {
     response = JSON.parse(response);
     responseW = JSON.parse(responseW);
     let array = response.records;
@@ -74,7 +74,7 @@ var FormatParis = (response,responseW) => {
     }
 };
 
-var FormatLille = (response,responseW) => {
+var Lille = (response,responseW) => {
     response = JSON.parse(response);
     responseW = JSON.parse(responseW);
     let array = response.records;
@@ -91,7 +91,7 @@ var FormatLille = (response,responseW) => {
     }
 };
 
-var FormatLyon = (response,responseW) => {
+var Lyon = (response,responseW) => {
     response = JSON.parse(response);
     responseW = JSON.parse(responseW);
     let array = response.features;
@@ -108,7 +108,7 @@ var FormatLyon = (response,responseW) => {
     }
 };
 
-var FormatStEtienne = (response,responseW) => {
+var StEtienne = (response,responseW) => {
     response = JSON.parse(response);
     responseW = JSON.parse(responseW);
     let array = response.data.stations;
@@ -135,23 +135,23 @@ var callUrl = async (url) => {
 };
 
 
-var getDataresponse = async () => {
+var getData = async () => {
     for (let index = 0; index < urls.length; index++) {
         const response = await callUrl(urls[index].url)
         const responseW = await callUrl(urlsWeather[index].url)
         console.log(index, urls[index].name)
         switch (urls[index].name) {
             case "StEtienne":
-                FormatStEtienne(response,responseW);
+                StEtienne(response,responseW);
                 break;
             case "Lyon":
-                FormatLyon(response,responseW);
+                Lyon(response,responseW);
                 break;
             case "Paris":
-                FormatParis(response,responseW);
+                Paris(response,responseW);
                 break;
             case "Lille":
-                FormatLille(response,responseW);
+                Lille(response,responseW);
                 break;
         }
     }
@@ -164,7 +164,7 @@ var getDataresponse = async () => {
 
 async function main(){
     stations = []
-    const stat = await getDataresponse()
+    const stat = await getData()
     console.log("nombre de stations :",stat.length)
     const myjson = {
         "@context": {
@@ -182,7 +182,6 @@ async function main(){
     
     const ntrip = await jsonld.toRDF(myjson, {format: 'application/n-quads'});
     fs.writeFileSync('./bikes.nt',ntrip)
-    // first we clear our graph
     const resDelete = await axios({
         method: "POST",
         url: "http://localhost:3030/bikes/",
@@ -197,7 +196,6 @@ async function main(){
         clear default`
     })
 
-    // then we create a new graph    
     const resUpdate = await axios({
         method: "POST",
         url: "http://localhost:3030/bikes",
@@ -209,7 +207,7 @@ async function main(){
     return {"john":"doe"}
 }
 main()
-  res.status(200).json({"lol":"lol"})
+  res.status(200).json({"over":"data"})
 }
 
 
