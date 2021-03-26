@@ -14,6 +14,8 @@ and
 
 The project is now running on ```http://localhost:3000```.
 
+Start the JENA server (launch the .bat file)
+
 ## How to use:
 
 You can move on the map and press the button at the selected area to get the list of the closest bicycle stations. it displays pins where the stations are.
