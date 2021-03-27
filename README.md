@@ -36,3 +36,30 @@ On the left of your screen, they is a list of all the stations close to you, sor
 On the top right of the web page, you can select the city where you want to be teleported to. 
 
 ![image](https://user-images.githubusercontent.com/73878811/112719136-8edf5780-8ef7-11eb-8c69-38640672d1dc.png)
+
+
+## In details :
+
+When loading the page, NextJS will execute the content of the getInitialProps function (in app.js)
+In this function we just call the api page.
+
+In there (/api/hello.js), We firstly fetch the data
+
+Then We create the Json-LD format in the myjson const :
+![image](https://user-images.githubusercontent.com/73878811/112719242-45dbd300-8ef8-11eb-9987-77a6671ff6f2.png)
+
+Then we clear the graph, to delete everything that was already in the database (to avoid creating duplicates when refetching)
+
+![image](https://user-images.githubusercontent.com/73878811/112719272-6f94fa00-8ef8-11eb-8ab9-2611032e0156.png)
+
+And finally we can upload the latest data we just fetched
+
+![image](https://user-images.githubusercontent.com/73878811/112719285-7f144300-8ef8-11eb-9dd7-3c889cd86d27.png)
+
+
+
+Now in the Map.js component, when clicking on the bottom left button on the page, we will execute a Sparql query to ask the database the stations near us :
+
+![image](https://user-images.githubusercontent.com/73878811/112719323-b256d200-8ef8-11eb-9276-1ee65d9bd368.png)
+
+The response is then stored into hooks so we will be able to display the stations on the map
